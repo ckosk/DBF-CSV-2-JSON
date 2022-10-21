@@ -10,11 +10,16 @@ import time
 
 ws = Tk()
 ws.title("DBF -> JSON & CSV")
-ws.geometry("700x300")
+ws.geometry("700x350")
 ws['bg']='#fb0'
 
 txtarea = Text(ws, width=40, height=5)
-txtarea.pack(pady=40, side=TOP)
+txtarea.insert("1.0", "--Status Will Appear Here--\n")
+txtarea.pack(pady=40, padx=10, side=TOP)
+
+txtarea1 = Text(ws, width=70, height=5)
+txtarea1.insert("1.0", "1. Enter cell 0,0 (First Column Name) in bottom-right text box\n2. Click First Column Name button\n3. Click Select File\n4. Select your DBF file\n4. Done. Status will appear in the top box")
+txtarea1.pack(pady=10, padx=10, side=TOP)
 
 pathh = Entry(ws)
 pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
