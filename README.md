@@ -4,12 +4,15 @@
 Single-file program that converts DBF files to JSON files and converts CSV files to JSON as well.
 To my knowledge, one of the first programs that does this.
 
+
 **APPLICATION FRONT** (DBF-CSV_JSON-APP.py) (Much easier than CSV2JSON.py)
   -Run "DBF-CSV_JSON-APP.py".
   
-  -Give the command, "python3 DBF-CSV_JSON-APP.py" the 0,0 cell (name of the first column) as an argument.
+  -Enter the name of the first column (cell 0,0) in the text box next to the "First Column Name" Button
   
-  -For example "python3 DBF-CSV_JSON-APP.py NAME". 
+  -After the name is entered, click the "First Column Name" Button
+  
+  -Click the "Select a File" Button
   
   -Select the DBF file in the application window. 
   
