@@ -1,10 +1,23 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter.messagebox import showinfo
 import csv
 import json
 from dbfread import DBF 
 import os
 import sys
+import time
+
+ws = Tk()
+ws.title("DBF -> JSON & CSV")
+ws.geometry("700x300")
+ws['bg']='#fb0'
+
+txtarea = Text(ws, width=40, height=5)
+txtarea.pack(pady=40, side=TOP)
+
+pathh = Entry(ws)
+pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
 
 def make_json(csvFilePath, jsonFilePath):
     data = {}
@@ -12,8 +25,14 @@ def make_json(csvFilePath, jsonFilePath):
         csvReader = csv.DictReader(csvf)
         #Convert each row into a dict and add it to data
         for rows in csvReader:
-            key = rows[str(sys.argv[1])] #THIS IS THE PRIMARY KEY, PICK YOUR FIRST COLUMN
-            data[key] = rows
+            try:
+                key = rows[get_input()] #THIS IS THE PRIMARY KEY, PICK YOUR FIRST COLUMN
+                data[key] = rows
+            except KeyError:
+                print("**INCORRECT FIRST COLUMN NAME**")
+                showinfo("Error", "Incorrect First Column Name\nCSV Generated\nInsert Correct Column Name to Generate JSON.")                
+                time.sleep(1)
+                exit()
     #Open json writer and dump data
     with open(jsonFilePath, 'w', encoding='utf-8') as jsonf:
         jsonf.write(json.dumps(data, indent=4))
@@ -28,8 +47,6 @@ def dbf_to_csv(dbf_table_pth):#Input a dbf, outputs a csv, same name and same pa
             writer.writerow(list(record.values()))
     return csv_fn #returns a csv file name, CAN be used in the make_json function
 
-jsonFilePath = r'finished.json' #NOTE This is where you pick the name of the JSON file that will be output
-
 def openFile():
     tf = filedialog.askopenfilename(
         initialdir="C:/Users/MainFrame/Desktop/", 
@@ -39,25 +56,25 @@ def openFile():
     pathh.insert(END, tf)
     tf = open(tf)
     dbfFilePath = os.path.abspath(tf.name)
+    jsonFilePath = dbfFilePath[:-4]+ ".json"
     make_json(dbf_to_csv(dbfFilePath), jsonFilePath) #INSTEAD OF "csvFilePath" PUT "dbf_to_csv(dbfFilePath)" IF TRYING TO CONVERT DBF
-    txtarea.insert(END, "Complete, files added to directory.")
+    txtarea.insert(END, "Success\nCSV and JSON files added to directory.")
     tf.close()
-
-ws = Tk()
-ws.title("DBF -> JSON & CSV")
-ws.geometry("400x300")
-ws['bg']='#fb0'
-
-txtarea = Text(ws, width=40, height=5)
-txtarea.pack(pady=40, side=TOP)
-
-pathh = Entry(ws)
-pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
 
 Button(
     ws, 
     text="Select File", 
     command=openFile
-    ).pack(side=RIGHT, expand=True, fill=X, padx=20)
+    ).pack(side=LEFT, expand=True, fill=X, padx=20)
+
+def get_input():
+   value = my_text_box.get("1.0","end-1c")
+   return(value)
+
+my_text_box=Text(ws, width=20, height=1)
+my_text_box.pack(side=RIGHT, expand=True, fill=X, padx=20)
+
+cell = Button(ws, text="First Column Name", command=lambda: get_input())
+cell.pack(side = RIGHT)
 
 ws.mainloop()
