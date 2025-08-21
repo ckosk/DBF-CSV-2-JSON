@@ -1,0 +1,10 @@
+# External packages that need to be installed
+dbfread>=2.0.7
+
+# Built-in Python modules (no installation needed):
+# - csv (built-in)
+# - json (built-in) 
+# - tkinter (built-in, comes with Python)
+# - os (built-in)
+# - sys (built-in)
+# - time (built-in)
